@@ -11,5 +11,20 @@ namespace CustomerModule.View
         {
             InitializeComponent();
         }
+
+        private void BtnAddCustomer_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnViewCustomers_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnEditCustomer_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
