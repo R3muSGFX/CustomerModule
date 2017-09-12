@@ -120,6 +120,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>CustomersDatabase.mdf</DependentUpon>
     </Content>
+    <Content Include="SQL\Customers_Delete.sql" />
+    <Content Include="SQL\Customers_Get.sql" />
+    <Content Include="SQL\Customers_Insert.sql" />
+    <Content Include="SQL\Customers_Select.sql" />
+    <Content Include="SQL\Customers_Update.sql" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
