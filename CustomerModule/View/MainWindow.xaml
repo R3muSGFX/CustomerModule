@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CustomerModule"
+        xmlns:local="clr-namespace:CustomerModule.View"
         mc:Ignorable="d"
         Title="Customer module" MinWidth="640" MinHeight="480">
     <Grid>
@@ -13,7 +13,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        
+
         <Menu x:Name="gridMenu" Grid.Row="0" DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Reset"/>
@@ -48,26 +48,41 @@
 
         <Grid x:Name="gridContent" Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="14*"/>
             </Grid.RowDefinitions>
 
-            <Button x:Name="btnAddCustomer" Content="btnAddCustomer"
-                    Grid.Row="0" Grid.Column="0" 
-                    Click="BtnAddCustomer_Click"/>
-            <Button x:Name="btnEditCustomer" Content="btnEditCustomer" 
-                    Grid.Row="0" Grid.Column="1" 
-                    Click="BtnEditCustomer_Click"/>
-            <Button x:Name="btnViewCustomers" Content="btnViewCustomers" 
-                    Grid.Row="1" Grid.Column="0" 
-                    Click="BtnViewCustomers_Click"/>
+            <Grid x:Name="gridAddCustomer" Grid.Column="0" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="141*"/>
+                    <ColumnDefinition Width="239*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="23*"/>
+                    <RowDefinition Height="24*"/>
+                    <RowDefinition Height="23*"/>
+                    <RowDefinition Height="39*"/>
+                    <RowDefinition Height="21*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Customer name:" Grid.Column="0" Grid.Row="0"/>
+                <TextBlock Text="Customer surname:" Grid.Column="0" Grid.Row="1"/>
+                <TextBlock Text="Customer phone number:" Grid.Column="0" Grid.Row="2"/>
+                <TextBlock Text="Customer address:" Grid.Column="0" Grid.Row="3"/>
+                <TextBox x:Name="tbCName" Grid.Column="1" Grid.Row="0" MaxLines="1"/>
+                <TextBox x:Name="tbCSurname" Grid.Column="1" Grid.Row="1" MaxLines="1"/>
+                <TextBox x:Name="tbCPhone" Grid.Column="1" Grid.Row="2" MaxLines="1"/>
+                <TextBox x:Name="tbCAddress" Grid.Column="1" Grid.Row="3" MaxLines="3"/>
+                <Button x:Name="btnAddCustomer" Click="BtnAddCustomer_Click" Grid.Row="4"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" 
+                        Content="Add customer"/>
+            </Grid>
 
         </Grid>
-        
+
         <DockPanel x:Name="DockPanel" DockPanel.Dock="Bottom" Grid.Row="3">
             <StatusBar>
                 <StatusBarItem HorizontalAlignment="Right">
@@ -75,6 +90,6 @@
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>
-        
+
     </Grid>
 </Window>

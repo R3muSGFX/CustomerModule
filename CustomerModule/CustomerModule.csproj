@@ -78,25 +78,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Customer.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Customer.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Customer.cs">
-      <DependentUpon>Customer.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Customer.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Customer.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Customers_Get_Result.cs">
-      <DependentUpon>Customer.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Customers_Select_Result.cs">
-      <DependentUpon>Customer.tt</DependentUpon>
-    </Compile>
     <Compile Include="View\AddCustomerPage.xaml.cs">
       <DependentUpon>AddCustomerPage.xaml</DependentUpon>
     </Compile>
@@ -149,13 +130,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="Model\Customer.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Customer.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Model\Customer.edmx.diagram">
-      <DependentUpon>Customer.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -166,19 +140,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Model\" />
     <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\Customer.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Customer.Context.cs</LastGenOutput>
-      <DependentUpon>Customer.edmx</DependentUpon>
-    </Content>
-    <Content Include="Model\Customer.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Customer.edmx</DependentUpon>
-      <LastGenOutput>Customer1.cs</LastGenOutput>
-    </Content>
     <Content Include="CustomersDatabase.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
