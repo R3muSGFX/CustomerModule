@@ -78,6 +78,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Customer.cs" />
+    <Compile Include="Model\ObjectAdapter.cs" />
     <Compile Include="View\AddCustomerPage.xaml.cs">
       <DependentUpon>AddCustomerPage.xaml</DependentUpon>
     </Compile>
@@ -140,7 +142,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
