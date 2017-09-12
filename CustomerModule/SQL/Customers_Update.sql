@@ -1,4 +1,4 @@
-ALTER PROCEDURE [dbo].[Customers_UPDATE]
+CREATE PROCEDURE [dbo].[Customers_Update]
 	@ERROR_NUMBER INT OUT,
 	@ERROR_MESSAGE NVARCHAR(4000) OUT,
 	@Customer_ID INT,
@@ -26,24 +26,24 @@ AS
 			BEGIN TRANSACTION;
 		ELSE
 			SAVE TRANSACTION @TRANNAME;
-			-- End transaction block
-		IF @TRANCOUNT = 0
-			COMMIT TRANSACTION;
-
+		
 		-- Validations
 		IF @Customer_ID IS NULL
 			RAISERROR (@ID_NULL, 11, 1);
 	
 		UPDATE
-			[dbo].[Customers_Update]
+			[dbo].[Customers]
 		SET
-			CUSTOMER_ID = @Customer_ID,
 			CUSTOMER_NAME = @Customer_Name,
 			CUSTOMER_SURNAME = @Customer_Surname,
 			CUSTOMER_PHONENUMBER = @Customer_Phonenumber,
 			CUSTOMER_ADDRESS = @Customer_Address
 		WHERE
 			CUSTOMER_ID = @Customer_ID
+
+		-- End transaction block
+		IF @TRANCOUNT = 0
+			COMMIT TRANSACTION;
 
 	END TRY
 	BEGIN CATCH
