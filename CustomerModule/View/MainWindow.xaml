@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:CustomerModule.View"
         mc:Ignorable="d"
         Title="Customer module" MinWidth="640" MinHeight="480"
-                                Width="640" Height="480">
+                                Width="640" Height="480"
+                                Icon="customers_logo.png">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -24,7 +25,7 @@
             <MenuItem Header="About">
                 <MenuItem Header="Help"/>
                 <Separator/>
-                <MenuItem x:Name="menuAbout" Header="About..." Click="menuAbout_Click"/>
+                <MenuItem x:Name="menuAbout" Header="About..." Click="MenuAbout_Click"/>
             </MenuItem>
         </Menu>
 

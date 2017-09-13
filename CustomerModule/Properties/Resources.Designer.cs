@@ -61,6 +61,16 @@ namespace CustomerModule.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap customers_logo {
+            get {
+                object obj = ResourceManager.GetObject("customers_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\remusm\source\repos\CustomerModule\CustomerModule\CustomersDatabase.mdf;Integrated Security=True.
         /// </summary>
         internal static string LocalDB {
