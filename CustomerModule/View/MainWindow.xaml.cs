@@ -143,6 +143,5 @@ namespace CustomerModule.View
 
         #endregion Properties
 
-        
     }
 }
