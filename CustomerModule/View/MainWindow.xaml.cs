@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using CustomerModule.Model;
-using System.Collections.Generic;
+﻿using System;
+using System.Windows;
+using CustomerModule.ViewModel;
 
 namespace CustomerModule.View
 {
@@ -15,37 +15,49 @@ namespace CustomerModule.View
         public MainWindow()
         {
             InitializeComponent();
-            database = new ObjectAdapter();
-            customers = database.SelectCustomers();
-            gridData.ItemsSource = customers;
+            InitDataset();
         }
 
         private void BtnAddCustomer_Click(object sender, RoutedEventArgs e)
         {
-            Customer customer = new Customer
-            {
-                CustomerId = 0,
-                CustomerName = tbCName.Text,
-                CustomerSurname = tbCSurname.Text,
-                CustomerPhonenumber = tbCPhone.Text,
-                CustomerAddress = tbCAddress.Text
-            };
+            dataset.AddCustomer(tbCName, tbCSurname, tbCPhone, tbCAddress);
+            tbStatusBar.Text = $"Customer {tbCName.Text + tbCSurname.Text}  added to database!";
+            ClearValues();
+            InitDataset();
+        }
 
-            database.InsertCustomer(customer);
-            gridData.ItemsSource = customersDataTable.UpdateDataTable();
+        private void ClearValues()
+        {
+            tbCName.Text = string.Empty;
+            tbCSurname.Text = string.Empty;
+            tbCPhone.Text = string.Empty;
+            tbCAddress.Text = string.Empty;
+        }
 
-            tbCName.Text = tbCSurname.Text = tbCPhone.Text = tbCAddress.Text = "";
-            tbStatusBar.Text = "Customer added to database!";
+        private void ResfreshPage_Click(object sender, RoutedEventArgs e)
+        {
+            InitDataset();
+        }
+
+        private void InitDataset()
+        {
+            dataset = new CustomerDataTable(gridData);
+            gridData = dataset.DataGrid;
+        }
+
+        private void menuAbout_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         #endregion Methods
 
         #region Properties
 
-        private ObjectAdapter database;
-        private List<Customer> customers;
+        private CustomerDataTable dataset;
 
         #endregion Properties
 
+        
     }
 }

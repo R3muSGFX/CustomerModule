@@ -68,6 +68,7 @@ namespace CustomerModule.Model
 
             using (currentConnection)
             {
+                currentConnection.ConnectionString = connectionString;
                 using (SqlCommand command = new SqlCommand())
                 {
                     currentConnection.Open();
@@ -98,7 +99,6 @@ namespace CustomerModule.Model
                     errorMessage = (String)GetParameterValue(command.Parameters[1]);
                     HandleErrors(errorNumber, errorMessage);
                 }
-                currentConnection.Close();
             }
             return customers;
         }
@@ -226,20 +226,12 @@ namespace CustomerModule.Model
             if (command == null)
                 throw new ArgumentNullException("Sql Command is null");
 
-            if (this.currentConnection == null)
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                using (SqlConnection connection = new SqlConnection(this.ConnectionString))
-                {
-                    connection.Open();
-                    command.Connection = connection;
-                    command.ExecuteNonQuery();
-                }
-            }
-            else
-            {
-                command.Connection = this.currentConnection;
-                command.Transaction = this.currentTransaction;
+                connection.Open();
+                command.Connection = connection;
                 command.ExecuteNonQuery();
+                connection.Close();
             }
         }
 

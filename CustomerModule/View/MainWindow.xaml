@@ -10,93 +10,88 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
         <Menu x:Name="gridMenu" Grid.Row="0" DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Reset"/>
+                <MenuItem x:Name="menuRefresh" Header="Refresh" Click="ResfreshPage_Click"/>
+                <MenuItem Header="Reset" />
                 <Separator/>
                 <MenuItem Header="Exit"/>
             </MenuItem>
             <MenuItem Header="About">
                 <MenuItem Header="Help"/>
                 <Separator/>
-                <MenuItem Header="About..."/>
+                <MenuItem x:Name="menuAbout" Header="About..." Click="menuAbout_Click"/>
             </MenuItem>
         </Menu>
 
-        <Grid x:Name="gridConnections" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="85"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Machine name:" Grid.Row="0" Grid.Column="0" 
-                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox x:Name="tbMachineName" Grid.Row="0" Grid.Column="1" IsEnabled="False"
-                     VerticalAlignment="Center"/>
-            <TextBlock Text="Database name:" Grid.Row="1" Grid.Column="0"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox x:Name="tbDatabaseName" Grid.Row="1" Grid.Column="1" IsEnabled="False"
-                     VerticalAlignment="Center"/>
-        </Grid>
-
-        <Grid x:Name="gridContent" Grid.Row="2" Margin="5,5,5,5">
+        <Grid x:Name="gridContent" Grid.Row="1" Margin="5,5,5,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="9*"/>
-                <RowDefinition Height="14*"/>
+                <RowDefinition Height="250"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid x:Name="gridAddCustomer" Grid.Column="0" Grid.Row="0" Margin="3,3,3,3">
+            <Grid x:Name="gridAddCustomer" Grid.Column="0" Grid.Row="0" 
+                  Margin="3,3,3,3" MaxWidth="391" MaxHeight="215" Height="215">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="141"/>
                     <ColumnDefinition Width="239*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="23*"/>
-                    <RowDefinition Height="24*"/>
-                    <RowDefinition Height="23*"/>
-                    <RowDefinition Height="39*"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="90"/>
                     <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Customer name:" Grid.Column="0" Grid.Row="0"/>
-                <TextBlock Text="Customer surname:" Grid.Column="0" Grid.Row="1"/>
-                <TextBlock Text="Customer phone number:" Grid.Column="0" Grid.Row="2"/>
-                <TextBlock Text="Customer address:" Grid.Column="0" Grid.Row="3"/>
-                <TextBox x:Name="tbCName" Grid.Column="1" Grid.Row="0" MaxLines="1"/>
-                <TextBox x:Name="tbCSurname" Grid.Column="1" Grid.Row="1" MaxLines="1"/>
-                <TextBox x:Name="tbCPhone" Grid.Column="1" Grid.Row="2" MaxLines="1"/>
-                <TextBox x:Name="tbCAddress" Grid.Column="1" Grid.Row="3" MaxLines="3"/>
+                <TextBlock Text="Customer name:" Grid.Column="0" Grid.Row="0" 
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Customer surname:" Grid.Column="0" Grid.Row="1"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Customer phone number:" Grid.Column="0" Grid.Row="2"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Customer address:" Grid.Column="0" Grid.Row="3"
+                           VerticalAlignment="Center"/>
+                <TextBox x:Name="tbCName" Grid.Column="1" Grid.Row="0" Height="20"
+                         MaxLines="1" MaxWidth="250" MaxLength="30" Margin="1,1,1,1"
+                         MinHeight="20" MaxHeight="20"/>
+                <TextBox x:Name="tbCSurname" Grid.Column="1" Grid.Row="1"  Height="20"
+                         MaxLines="1" MaxWidth="250" MaxLength="30" Margin="1,1,1,1"
+                         MinHeight="20" MaxHeight="20"/>
+                <TextBox x:Name="tbCPhone" Grid.Column="1" Grid.Row="2" 
+                         MaxLines="1" MaxWidth="250" MaxLength="10" Margin="1,1,1,1"
+                         MinHeight="20" MaxHeight="20" Height="20"/>
+                <TextBox x:Name="tbCAddress" Grid.Column="1" Grid.Row="3" 
+                         MaxLines="3" MaxWidth="750" MaxLength="50" Margin="1,1,1,1"
+                         MinHeight="60" MaxHeight="60" Height="60"
+                         TextWrapping="Wrap"/>
                 <Button x:Name="btnAddCustomer" Click="BtnAddCustomer_Click" Grid.Row="4"
                         HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" 
                         Content="Add customer" Margin="3,3,3,3" Height="27" Width="85"/>
             </Grid>
 
-            <DataGrid Grid.RowSpan="2" Grid.Column="1" x:Name="gridData" >
-                <!--ItemsSource="{Binding Customers}"
-                      AutoGenerateColumns="False"-->
-                <!--<DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding CustomerId}"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding CustomerName}"/>
-                    <DataGridTextColumn Header="Surname" Binding="{Binding CustomerSurname}"/>
-                    <DataGridTextColumn Header="Phone number" Binding="{Binding CustomerPhonenumber}"/>
-                    <DataGridTextColumn Header="Address" Binding="{Binding CustomerAddress}"/>
-                </DataGrid.Columns>-->
+            <DataGrid Grid.RowSpan="2" Grid.Column="1" x:Name="gridData"
+                      ItemsSource="{Binding Customers}" Margin="3,3,3,3"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding CustomerId}" CanUserResize="False"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding CustomerName}" CanUserResize="False"/>
+                    <DataGridTextColumn Header="Surname" Binding="{Binding CustomerSurname}" CanUserResize="False"/>
+                    <DataGridTextColumn Header="Phone number" Binding="{Binding CustomerPhonenumber}" CanUserResize="False"/>
+                    <DataGridTextColumn Header="Address" Binding="{Binding CustomerAddress}" CanUserResize="False"/>
+                </DataGrid.Columns>
             </DataGrid>
 
         </Grid>
 
-        <DockPanel x:Name="DockPanel" DockPanel.Dock="Bottom" Grid.Row="3">
+        <DockPanel x:Name="DockPanel" DockPanel.Dock="Bottom" Grid.Row="2">
             <StatusBar>
                 <StatusBarItem HorizontalAlignment="Right">
                     <TextBlock x:Name="tbStatusBar" Text="Some statusbar items here..." FontStyle="Italic"/>
