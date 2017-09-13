@@ -34,6 +34,26 @@ namespace CustomerModule.ViewModel
             UpdateTable();
         }
 
+        public void UpdateCustomer(int id, TextBox tbName, TextBox tbSurname, TextBox tbPhone, TextBox tbAddress)
+        {
+            Customer customer = new Customer()
+            {
+                CustomerId = id,
+                CustomerName = tbName.Text,
+                CustomerSurname = tbSurname.Text,
+                CustomerPhonenumber = tbPhone.Text,
+                CustomerAddress = tbAddress.Text
+            };
+            database.UpdateCustomer(customer);
+            UpdateTable();
+        }
+
+        public void DeleteCustomer(int id)
+        {
+            database.DeleteCustomer(id);
+            UpdateTable();
+        }
+
         private ObjectAdapter database;
         private List<Customer> customers;
         private DataGrid dataGrid;

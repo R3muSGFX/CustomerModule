@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CustomerModule.View"
         mc:Ignorable="d"
-        Title="Customer module" MinWidth="640" MinHeight="480"
-                                Width="640" Height="480"
+        Title="Customer module" MinWidth="640" MinHeight="580"
+                                Width="640" Height="580"
                                 Icon="customers_logo.png">
     <Grid>
         <Grid.RowDefinitions>
@@ -78,9 +78,58 @@
                         Content="Add customer" Margin="3,3,3,3" Height="27" Width="85"/>
             </Grid>
 
+            <Grid x:Name="gridUpdateDelete" Grid.Column="0" Grid.Row="1"
+                  Margin="3,3,3,3" MaxWidth="391" MaxHeight="215" Height="215"
+                  IsEnabled="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="141"/>
+                    <ColumnDefinition Width="239*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="90"/>
+                    <RowDefinition Height="35"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Customer name:" Grid.Column="0" Grid.Row="0" 
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Customer surname:" Grid.Column="0" Grid.Row="1"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Customer phone number:" Grid.Column="0" Grid.Row="2"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Customer address:" Grid.Column="0" Grid.Row="3"
+                           VerticalAlignment="Center"/>
+                
+                <TextBox x:Name="tbUpdateName" Grid.Column="1" Grid.Row="0" Height="20"
+                         MaxLines="1" MaxWidth="250" MaxLength="30" Margin="1,1,1,1"
+                         MinHeight="20" MaxHeight="20"/>
+                <TextBox x:Name="tbUpdateSurname" Grid.Column="1" Grid.Row="1"  Height="20"
+                         MaxLines="1" MaxWidth="250" MaxLength="30" Margin="1,1,1,1"
+                         MinHeight="20" MaxHeight="20"/>
+                <TextBox x:Name="tbUpdatePhone" Grid.Column="1" Grid.Row="2" 
+                         MaxLines="1" MaxWidth="250" MaxLength="10" Margin="1,1,1,1"
+                         MinHeight="20" MaxHeight="20" Height="20"/>
+                <TextBox x:Name="tbUpdateAddress" Grid.Column="1" Grid.Row="3" 
+                         MaxLines="3" MaxWidth="750" MaxLength="50" Margin="1,1,1,1"
+                         MinHeight="60" MaxHeight="60" Height="60"
+                         TextWrapping="Wrap"/>
+                <Button x:Name="btnUpdateCustomer" Click="BtnUpdateCustomer_Click" Grid.Row="4"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"
+                        Content="Update customer" Margin="3,3,3,3" Height="27" Width="100"/>
+                <Button x:Name="btnDeleteCustomer" Click="BtnDeleteCustomer_Click" Grid.Row="4"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" 
+                        Content="Delete customer" Margin="3,3,3,3" Height="27" Width="100"/>
+            </Grid>
+            
             <DataGrid Grid.RowSpan="2" Grid.Column="1" x:Name="gridData"
                       ItemsSource="{Binding Customers}" Margin="3,3,3,3"
-                      AutoGenerateColumns="False">
+                      AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridRow">
+                        <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                    </Style>
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding CustomerId}" CanUserResize="False"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding CustomerName}" CanUserResize="False"/>
@@ -95,7 +144,7 @@
         <DockPanel x:Name="DockPanel" DockPanel.Dock="Bottom" Grid.Row="2">
             <StatusBar>
                 <StatusBarItem HorizontalAlignment="Right">
-                    <TextBlock x:Name="tbStatusBar" Text="Some statusbar items here..." FontStyle="Italic"/>
+                    <TextBlock x:Name="tbStatusBar" Text="Loaded database entries" FontStyle="Italic"/>
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>

@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using CustomerModule.Model;
 using CustomerModule.ViewModel;
 using Gat.Controls;
 
@@ -35,6 +36,25 @@ namespace CustomerModule.View
             tbCAddress.Text = string.Empty;
         }
 
+        private void ClearUpdateDeleteValues()
+        {
+            tbUpdateName.Text = string.Empty;
+            tbUpdateSurname.Text = string.Empty;
+            tbUpdatePhone.Text = string.Empty;
+            tbUpdateAddress.Text = string.Empty;
+            gridUpdateDelete.IsEnabled = false;
+        }
+
+        private void UpdateDeleteFill(Customer customer)
+        {
+            tbUpdateName.Text = customer.CustomerName;
+            tbUpdateSurname.Text = customer.CustomerSurname;
+            tbUpdatePhone.Text = customer.CustomerPhonenumber;
+            tbUpdateAddress.Text = customer.CustomerAddress;
+            customerRowId = customer.CustomerId;
+            gridUpdateDelete.IsEnabled = true;
+        }
+
         #region Click methods
 
         private void BtnAddCustomer_Click(object sender, RoutedEventArgs e)
@@ -48,6 +68,8 @@ namespace CustomerModule.View
         private void ResfreshPage_Click(object sender, RoutedEventArgs e)
         {
             InitDataset();
+            ClearValues();
+            ClearUpdateDeleteValues();
         }
 
         private void MenuAbout_Click(object sender, RoutedEventArgs e)
@@ -67,6 +89,30 @@ namespace CustomerModule.View
             about.Show();
         }
 
+        private void Row_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            gridUpdateDelete.IsEnabled = true;
+            DataGridRow row = sender as DataGridRow;
+            Customer customer = row.Item as Customer;
+            UpdateDeleteFill(customer);
+        }
+
+        private void BtnDeleteCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            dataset.DeleteCustomer(customerRowId);
+            tbStatusBar.Text = $"Customer {tbCName.Text + tbCSurname.Text} deleted from database!";
+            ClearUpdateDeleteValues();
+            InitDataset();
+        }
+
+        private void BtnUpdateCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            dataset.UpdateCustomer(customerRowId, tbUpdateName, tbUpdateSurname, tbUpdatePhone, tbUpdateAddress);
+            tbStatusBar.Text = $"Customer {tbCName.Text + tbCSurname.Text} updated in database!";
+            ClearUpdateDeleteValues();
+            InitDataset();
+        }
+        
         #endregion Click methods
 
         #endregion Methods
@@ -74,9 +120,9 @@ namespace CustomerModule.View
         #region Properties
 
         private CustomerDataTable dataset;
+        private int customerRowId;
 
         #endregion Properties
 
-        
     }
 }
