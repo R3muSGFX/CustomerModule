@@ -60,7 +60,7 @@ namespace CustomerModule.View
         private void BtnAddCustomer_Click(object sender, RoutedEventArgs e)
         {
             dataset.AddCustomer(tbCName, tbCSurname, tbCPhone, tbCAddress);
-            tbStatusBar.Text = $"Customer {tbCName.Text + tbCSurname.Text}  added to database!";
+            tbStatusBar.Text = $"Customer {tbCName.Text} {tbCSurname.Text}  added to database!";
             ClearValues();
             InitDataset();
         }
@@ -100,7 +100,7 @@ namespace CustomerModule.View
         private void BtnDeleteCustomer_Click(object sender, RoutedEventArgs e)
         {
             dataset.DeleteCustomer(customerRowId);
-            tbStatusBar.Text = $"Customer {tbCName.Text + tbCSurname.Text} deleted from database!";
+            tbStatusBar.Text = $"Customer {tbUpdateName.Text} {tbUpdateSurname.Text} deleted from database!";
             ClearUpdateDeleteValues();
             InitDataset();
         }
@@ -108,11 +108,30 @@ namespace CustomerModule.View
         private void BtnUpdateCustomer_Click(object sender, RoutedEventArgs e)
         {
             dataset.UpdateCustomer(customerRowId, tbUpdateName, tbUpdateSurname, tbUpdatePhone, tbUpdateAddress);
-            tbStatusBar.Text = $"Customer {tbCName.Text + tbCSurname.Text} updated in database!";
+            tbStatusBar.Text = $"Customer {tbUpdateName.Text} {tbUpdateSurname.Text} updated in database!";
             ClearUpdateDeleteValues();
             InitDataset();
         }
-        
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to exit?",
+                                "Exit", MessageBoxButton.YesNo,
+                                MessageBoxImage.Question)
+                               == MessageBoxResult.Yes)
+            {
+                base.OnClosing(e);
+            }
+            else e.Cancel = true;
+        }
+
+        private void MenuExit_Click(object sender, RoutedEventArgs e) => Application.Current.Shutdown();
+
+        private void MenuHelp_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: how to use
+        }
+
         #endregion Click methods
 
         #endregion Methods
@@ -124,5 +143,6 @@ namespace CustomerModule.View
 
         #endregion Properties
 
+        
     }
 }

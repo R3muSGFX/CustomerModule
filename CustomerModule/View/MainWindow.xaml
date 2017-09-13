@@ -20,10 +20,10 @@
                 <MenuItem x:Name="menuRefresh" Header="Refresh" Click="ResfreshPage_Click"/>
                 <MenuItem Header="Reset" />
                 <Separator/>
-                <MenuItem Header="Exit"/>
+                <MenuItem x:Name="menuExit" Header="Exit" Click="MenuExit_Click"/>
             </MenuItem>
             <MenuItem Header="About">
-                <MenuItem Header="Help"/>
+                <MenuItem x:Name="menuHelp" Header="Help" Click="MenuHelp_Click"/>
                 <Separator/>
                 <MenuItem x:Name="menuAbout" Header="About..." Click="MenuAbout_Click"/>
             </MenuItem>
