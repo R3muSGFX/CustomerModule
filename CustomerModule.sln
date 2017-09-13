@@ -22,4 +22,12 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3488BF1A-2EEE-4020-B357-558AD5682403}
 	EndGlobalSection
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion = True
+		UpdateAssemblyFileVersion = True
+		UpdateAssemblyInfoVersion = True
+		AssemblyVersionSettings = IncrementOnDemandWithReset.IncrementOnDemandWithReset.IncrementOnDemandWithReset.Increment
+		AssemblyFileVersionSettings = IncrementOnDemandWithReset.IncrementOnDemandWithReset.IncrementOnDemandWithReset.Increment
+		AssemblyInfoVersionSettings = IncrementOnDemandWithReset.IncrementOnDemandWithReset.IncrementOnDemandWithReset.Increment
+	EndGlobalSection
 EndGlobal

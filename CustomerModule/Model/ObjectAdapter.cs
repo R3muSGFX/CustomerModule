@@ -8,9 +8,56 @@ namespace CustomerModule.Model
 {
     public class ObjectAdapter
     {
-        public Customer GetCustomers(int customerId)
+        
+        #region Methods
+
+        public ObjectAdapter()
         {
-            return null;
+            connectionString = Properties.Resources.LocalDB;
+            currentConnection = new SqlConnection(connectionString);
+        }
+
+        public Customer GetCustomer(Int32? customerId)
+        {
+            Customer customer = new Customer();
+            Int32? errorNumber = default(Int32?);
+            String errorMessage = default(String);
+
+            using (currentConnection)
+            {
+                using (SqlCommand command = new SqlCommand())
+                {
+                    currentConnection.Open();
+                    command.Connection = currentConnection;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandTimeout = 1200;
+                    command.CommandText = @"[dbo].[Customers_Get]";
+                    command.Parameters.Add(new SqlParameter(@"@ERROR_NUMBER", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                    command.Parameters.Add(new SqlParameter(@"@ERROR_MESSAGE", SqlDbType.NVarChar, 4000, ParameterDirection.InputOutput, true, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                    command.Parameters.Add(new SqlParameter(@"@CUSTOMER_ID", SqlDbType.Int, 4, ParameterDirection.Input, false, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                    SetParameterValue(command.Parameters[0], errorNumber);
+                    SetParameterValue(command.Parameters[1], errorMessage);
+                    SetParameterValue(command.Parameters[2], customerId);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            customer.CustomerId = reader.GetInt32(reader.GetOrdinal(@"CUSTOMER_ID"));
+                            customer.CustomerName = reader.GetString(reader.GetOrdinal(@"CUSTOMER_NAME"));
+                            customer.CustomerSurname = reader.GetString(reader.GetOrdinal(@"CUSTOMER_SURNAME"));
+                            customer.CustomerPhonenumber = reader.GetString(reader.GetOrdinal(@"CUSTOMER_PHONENUMBER"));
+                            customer.CustomerAddress = reader.GetString(reader.GetOrdinal(@"CUSTOMER_ADDRESS"));
+                        }
+                    }
+
+                    errorNumber = (Int32?)GetParameterValue(command.Parameters[0]);
+                    errorMessage = (String)GetParameterValue(command.Parameters[1]);
+                    HandleErrors(errorNumber, errorMessage);
+                }
+                currentConnection.Close();
+            }
+            return customer;
         }
 
         public List<Customer> SelectCustomers()
@@ -18,96 +65,181 @@ namespace CustomerModule.Model
             List<Customer> customers = new List<Customer>();
             Int32? errorNumber = default(Int32?);
             String errorMessage = default(String);
-            Int32? currentUserId = default(Int32?);
+
+            using (currentConnection)
+            {
+                using (SqlCommand command = new SqlCommand())
+                {
+                    currentConnection.Open();
+                    command.Connection = currentConnection;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandTimeout = 1200;
+                    command.CommandText = @"[dbo].[Customers_Select]";
+                    command.Parameters.Add(new SqlParameter(@"@ERROR_NUMBER", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                    command.Parameters.Add(new SqlParameter(@"@ERROR_MESSAGE", SqlDbType.NVarChar, 4000, ParameterDirection.InputOutput, true, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                    SetParameterValue(command.Parameters[0], errorNumber);
+                    SetParameterValue(command.Parameters[1], errorMessage);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Customer customer = new Customer();
+                            customer.CustomerId = reader.GetInt32(reader.GetOrdinal(@"CUSTOMER_ID"));
+                            customer.CustomerName = reader.GetString(reader.GetOrdinal(@"CUSTOMER_NAME"));
+                            customer.CustomerSurname = reader.GetString(reader.GetOrdinal(@"CUSTOMER_SURNAME"));
+                            customer.CustomerPhonenumber = reader.GetString(reader.GetOrdinal(@"CUSTOMER_PHONENUMBER"));
+                            customer.CustomerAddress = reader.GetString(reader.GetOrdinal(@"CUSTOMER_ADDRESS"));
+                            customers.Add(customer);
+                        }
+                    }
+
+                    errorNumber = (Int32?)GetParameterValue(command.Parameters[0]);
+                    errorMessage = (String)GetParameterValue(command.Parameters[1]);
+                    HandleErrors(errorNumber, errorMessage);
+                }
+                currentConnection.Close();
+            }
+            return customers;
+        }
+
+        public void InsertCustomer(Customer customer)
+        {
+            Int32? errorNumber = default(Int32?);
+            String errorMessage = default(String);
 
             using (SqlCommand command = new SqlCommand())
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandTimeout = 1200;
-                command.CommandText = @"[MR].[usp_Users_Get]";
-                command.Parameters.Add(new SqlParameter(@"@ERROR_NUMBER", System.Data.SqlDbType.Int, 4, System.Data.ParameterDirection.InputOutput, true, (byte)10, (byte)0, null, System.Data.DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
-                command.Parameters.Add(new SqlParameter(@"@ERROR_MESSAGE", System.Data.SqlDbType.NVarChar, 4000, System.Data.ParameterDirection.InputOutput, true, (byte)0, (byte)0, null, System.Data.DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
-                command.Parameters.Add(new SqlParameter(@"@CURRENT_USER_ID", System.Data.SqlDbType.Int, 4, System.Data.ParameterDirection.Input, true, (byte)10, (byte)0, null, System.Data.DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
-                command.Parameters.Add(new SqlParameter(@"@ID_USER", System.Data.SqlDbType.Int, 4, System.Data.ParameterDirection.Input, true, (byte)10, (byte)0, null, System.Data.DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
-                SetParameterValue(command.Parameters[3], idUser);
+                command.CommandText = @"[dbo].[Customers_Insert]";
+                command.Parameters.Add(new SqlParameter(@"@ERROR_NUMBER", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@ERROR_MESSAGE", SqlDbType.NVarChar, 4000, ParameterDirection.InputOutput, true, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_ID", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_NAME", SqlDbType.NVarChar, 30, ParameterDirection.Input, false, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_SURNAME", SqlDbType.NVarChar, 30, ParameterDirection.Input, false, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_PHONENUMBER", SqlDbType.VarChar, 10, ParameterDirection.Input, false, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_ADDRESS", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
                 SetParameterValue(command.Parameters[0], errorNumber);
                 SetParameterValue(command.Parameters[1], errorMessage);
-                SetParameterValue(command.Parameters[2], currentUserId);
-
-                ExecuteReader(
-                    command,
-                    delegate (SqlDataReader reader)
-                    {
-                        int[] ord = GetOrdinals(reader, @"IdUser", @"Code", @"Name", @"Account", @"PasswordHash", @"FlagDel", @"FlagServiceProvider", @"RowDate", @"RowUserId", @"Email", @"Phone", @"IdOrganizationUnit", @"FlagBusinessRole", @"OrganizationUnitCode", @"OrganizationUnitName");
-                        if (reader.Read())
-                        {
-                            current.IdUser = Copy(current.IdUser, reader, ord[0]);
-                            current.Code = Copy(current.Code, reader, ord[1]);
-                            current.Name = Copy(current.Name, reader, ord[2]);
-                            current.Account = Copy(current.Account, reader, ord[3]);
-                            current.PasswordHash = Copy(current.PasswordHash, reader, ord[4]);
-                            current.FlagDel = Copy(current.FlagDel, reader, ord[5]);
-                            current.FlagServiceProvider = Copy(current.FlagServiceProvider, reader, ord[6]);
-                            current.RowDate = Copy(current.RowDate, reader, ord[7]);
-                            current.RowUserId = Copy(current.RowUserId, reader, ord[8]);
-                            current.Email = Copy(current.Email, reader, ord[9]);
-                            current.Phone = Copy(current.Phone, reader, ord[10]);
-                            current.IdOrganizationUnit = Copy(current.IdOrganizationUnit, reader, ord[11]);
-                            current.FlagBusinessRole = Copy(current.FlagBusinessRole, reader, ord[12]);
-                            current.OrganizationUnitCode = Copy(current.OrganizationUnitCode, reader, ord[13]);
-                            current.OrganizationUnitName = Copy(current.OrganizationUnitName, reader, ord[14]);
-                            result.Add(current);
-                        }
-
-                        while (reader.Read()) ;
-                    });
-
+                SetParameterValue(command.Parameters[2], customer.CustomerId);
+                SetParameterValue(command.Parameters[3], customer.CustomerName);
+                SetParameterValue(command.Parameters[4], customer.CustomerSurname);
+                SetParameterValue(command.Parameters[5], customer.CustomerPhonenumber);
+                SetParameterValue(command.Parameters[6], customer.CustomerAddress);
+                ExecuteNonQuery(command);
                 errorNumber = (Int32?)GetParameterValue(command.Parameters[0]);
                 errorMessage = (String)GetParameterValue(command.Parameters[1]);
                 HandleErrors(errorNumber, errorMessage);
             }
-
-            return customers;
         }
+
+        public void UpdateCustomer(Customer customer)
+        {
+            Int32? errorNumber = default(Int32?);
+            String errorMessage = default(String);
+
+            using (SqlCommand command = new SqlCommand())
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandTimeout = 1200;
+                command.CommandText = @"[dbo].[Customers_Update]";
+                command.Parameters.Add(new SqlParameter(@"@ERROR_NUMBER", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@ERROR_MESSAGE", SqlDbType.NVarChar, 4000, ParameterDirection.InputOutput, true, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_ID", SqlDbType.Int, 4, ParameterDirection.Input, true, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_NAME", SqlDbType.NVarChar, 30, ParameterDirection.Input, false, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_SURNAME", SqlDbType.NVarChar, 30, ParameterDirection.Input, false, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_PHONENUMBER", SqlDbType.VarChar, 10, ParameterDirection.Input, false, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_ADDRESS", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                SetParameterValue(command.Parameters[0], errorNumber);
+                SetParameterValue(command.Parameters[1], errorMessage);
+                SetParameterValue(command.Parameters[2], customer.CustomerId);
+                SetParameterValue(command.Parameters[3], customer.CustomerName);
+                SetParameterValue(command.Parameters[4], customer.CustomerSurname);
+                SetParameterValue(command.Parameters[5], customer.CustomerPhonenumber);
+                SetParameterValue(command.Parameters[6], customer.CustomerAddress);
+                ExecuteNonQuery(command);
+                errorNumber = (Int32?)GetParameterValue(command.Parameters[0]);
+                errorMessage = (String)GetParameterValue(command.Parameters[1]);
+                HandleErrors(errorNumber, errorMessage);
+            }
+        }
+
+        public void DeleteCustomer(Int32? customerId)
+        {
+            Int32? errorNumber = default(Int32?);
+            String errorMessage = default(String);
+
+            using (SqlCommand command = new SqlCommand())
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandTimeout = 1200;
+                command.CommandText = @"[dbo].[Customers_Delete]";
+                command.Parameters.Add(new SqlParameter(@"@ERROR_NUMBER", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@ERROR_MESSAGE", SqlDbType.NVarChar, 4000, ParameterDirection.InputOutput, true, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_ID", SqlDbType.Int, 4, ParameterDirection.Input, true, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                SetParameterValue(command.Parameters[0], errorNumber);
+                SetParameterValue(command.Parameters[1], errorMessage);
+                SetParameterValue(command.Parameters[2], customerId);
+                ExecuteNonQuery(command);
+                errorNumber = (Int32?)GetParameterValue(command.Parameters[0]);
+                errorMessage = (String)GetParameterValue(command.Parameters[1]);
+                HandleErrors(errorNumber, errorMessage);
+            }
+        }
+
+        public void DeleteCustomer(Customer customer)
+        {
+            Int32? errorNumber = default(Int32?);
+            String errorMessage = default(String);
+
+            using (SqlCommand command = new SqlCommand())
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandTimeout = 1200;
+                command.CommandText = @"[dbo].[Customers_Delete]";
+                command.Parameters.Add(new SqlParameter(@"@ERROR_NUMBER", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@ERROR_MESSAGE", SqlDbType.NVarChar, 4000, ParameterDirection.InputOutput, true, 0, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                command.Parameters.Add(new SqlParameter(@"@CUSTOMER_ID", SqlDbType.Int, 4, ParameterDirection.Input, true, 10, 0, null, DataRowVersion.Current, DBNull.Value) { UdtTypeName = null });
+                SetParameterValue(command.Parameters[0], errorNumber);
+                SetParameterValue(command.Parameters[1], errorMessage);
+                SetParameterValue(command.Parameters[2], customer.CustomerId);
+                ExecuteNonQuery(command);
+                errorNumber = (Int32?)GetParameterValue(command.Parameters[0]);
+                errorMessage = (String)GetParameterValue(command.Parameters[1]);
+                HandleErrors(errorNumber, errorMessage);
+            }
+        }
+
+        #region Handler methods
 
         protected virtual void SetParameterValue(SqlParameter parameter, object value, string structuredTypeName = null)
         {
             if (parameter == null)
-                throw new ArgumentNullException("");
+                throw new ArgumentNullException("Sql Parameter is null.");
            
             parameter.Value = value == null ? DBNull.Value : (object)value;
         }
 
-        public void ExecuteReader(SqlCommand command, Action<SqlDataReader> action)
+        private void ExecuteNonQuery(SqlCommand command)
         {
             if (command == null)
-                throw new ArgumentNullException("");
-
-            if (action == null)
-                throw new ArgumentNullException("");
+                throw new ArgumentNullException("Sql Command is null");
 
             if (this.currentConnection == null)
             {
-                // Creez o conexiune noua
                 using (SqlConnection connection = new SqlConnection(this.ConnectionString))
                 {
                     connection.Open();
                     command.Connection = connection;
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        action(reader);
-                    }
+                    command.ExecuteNonQuery();
                 }
             }
             else
             {
-                // Folosesc conexiunea si tranzactia existente
                 command.Connection = this.currentConnection;
                 command.Transaction = this.currentTransaction;
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    action(reader);
-                }
+                command.ExecuteNonQuery();
             }
         }
 
@@ -128,7 +260,7 @@ namespace CustomerModule.Model
             }
         }
 
-        public static string RemoveErrorPrefix(string message)
+        private static string RemoveErrorPrefix(string message)
         {
             // Deoarece mesajele de eroare din baza de date se afiseaza folosind aceasta metoda, 
             // incerc sa elimin din fata prefixul care vine din baza de date
@@ -139,60 +271,20 @@ namespace CustomerModule.Model
             return message;
         }
 
-        protected virtual T Convert<T>(object value)
-        {
-            if (value == DBNull.Value)
-                return default(T);
-            return (T)value;
-        }
-        
-        protected virtual T Copy<T>(T defaultValue, IDataReader reader, int index)
-        {
-            if (reader == null)
-                throw new ArgumentNullException("");
+        #endregion Handler methods
 
-            if (index < 0 || reader.IsDBNull(index))
-                return defaultValue;
+        #endregion Methods
 
-            object value = reader.GetValue(index);
-            return Convert<T>(value);
-        }
+        #region Properties
 
-        protected virtual int[] GetOrdinals(IDataReader reader, params string[] names)
-        {
-            if (reader == null)
-                throw new ArgumentNullException(Properties.Resources.AdapterBase04);
+        private SqlConnection currentConnection;
+        private SqlTransaction currentTransaction;
+        private string connectionString;
 
-            if (names == null)
-                throw new ArgumentNullException(Properties.Resources.AdapterBase05);
+        public SqlTransaction Transaction { get => currentTransaction; }
+        public SqlConnection Connection { get => currentConnection; }
 
-            // Extrag coloanele din reader
-            int count = reader.FieldCount;
-            string[] columnNames = new string[count];
-            for (int i = 0; i < count; i++)
-                columnNames[i] = Naming.Convert(reader.GetName(i), NamingStyle.Pascal);
+        #endregion Properties
 
-            // Extrag ordinalele
-            int[] ord = new int[names.Length];
-            for (int i = 0; i < ord.Length; i++)
-            {
-                ord[i] = -1;
-                for (int j = 0; j < count; j++)
-                {
-                    int k = (i + j) % count;
-                    if (string.Equals(columnNames[k], names[i]))
-                    {
-                        ord[i] = k;
-                        break;
-                    }
-                }
-            }
-
-            return ord;
-        }
-
-        private SqlConnection currentConnection = null;
-        private SqlTransaction currentTransaction = null;
-        private string ConnectionString = "";
     }
 }
