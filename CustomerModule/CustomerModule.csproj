@@ -55,9 +55,6 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Gat.Controls.AboutBox, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AboutBox.2.0.0\lib\net451\Gat.Controls.AboutBox.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -84,6 +81,10 @@
     </ApplicationDefinition>
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\ObjectAdapter.cs" />
+    <Page Include="View\AboutControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -93,6 +94,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModel\CustomerDataTable.cs" />
+    <Compile Include="View\About.cs" />
+    <Compile Include="View\AboutControlView.xaml.cs">
+      <DependentUpon>AboutControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AboutControlViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

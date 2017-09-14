@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using CostumerModule.View.AboutBox;
 using CustomerModule.Model;
 using CustomerModule.ViewModel;
-using Gat.Controls;
 
 namespace CustomerModule.View
 {
